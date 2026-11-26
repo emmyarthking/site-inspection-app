@@ -1,5 +1,5 @@
 /* Offline support: keep the app and its libraries on the phone. */
-const CACHE = "sil-v1";
+const CACHE = "sil-v2";
 const SHELL = ["./", "index.html", "config.js", "backend.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-180.png",
   "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js",
   "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
@@ -16,7 +16,7 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.pathname.includes("/rest/v1/") || url.pathname.includes("/auth/v1/") || url.pathname.includes("/realtime/")) return; // live data: never cache
-  const isPage = req.mode === "navigate" || url.pathname.endsWith(".html") || url.pathname.endsWith("config.js");
+  const isPage = req.mode === "navigate" || (url.origin === location.origin && /\.(html|js|webmanifest)$/.test(url.pathname));
   if (isPage) {
     // network first so updates arrive, cache when offline
     e.respondWith(fetch(req).then(r => { const copy = r.clone(); caches.open(CACHE).then(c => c.put(req, copy)); return r; }).catch(() => caches.match(req).then(r => r || caches.match("index.html"))));
