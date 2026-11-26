@@ -436,6 +436,10 @@ textarea.fld{min-height:80px}
         <button class="btn" type="button" id="dl-pdf">Download PDF</button>
         <button class="btn ghost" type="button" id="dl-xlsx">Download Excel</button>
       </div>
+      <div class="row dlrow" id="share-row" hidden>
+        <button class="btn ghost" type="button" id="sh-pdf"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>Share PDF</button>
+        <button class="btn ghost" type="button" id="sh-xlsx"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>Share Excel</button>
+      </div>
       <div class="msg" id="rmsg" role="status"></div>
     </div>
     <div class="rsum" id="rsum"></div>
@@ -809,8 +813,21 @@ textarea.fld{min-height:80px}
     } catch { return null; }
   }
   const fileBase = s => "inspection-report_" + s.from + "_to_" + s.to;
+  let shareNext = false;
+  const MIME = {pdf:"application/pdf", xlsx:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
+  const canShareFiles = (() => { try { return !!(navigator.canShare && navigator.canShare({files:[new File(["x"], "t.pdf", {type:"application/pdf"})]})); } catch { return false; } })();
+  if (canShareFiles) $("share-row").hidden = false;
+  $("sh-pdf").onclick = () => { shareNext = true; $("dl-pdf").click(); };
+  $("sh-xlsx").onclick = () => { shareNext = true; $("dl-xlsx").click(); };
   async function save(filename, data){
     const m = $("rmsg"); m.className = "msg";
+    if (shareNext) {
+      shareNext = false;
+      const file = new File([data], filename, {type: MIME[filename.split(".").pop()] || "application/octet-stream"});
+      try { await navigator.share({files:[file], title:"Site inspection report", text:"Site inspection report: " + filename.replace(/^inspection-report_|\.\w+$/g,"").replace("_to_"," to ")}); m.textContent = "Shared."; }
+      catch (e) { m.textContent = e && e.name === "AbortError" ? "Sharing cancelled." : "Couldn't open sharing on this phone. Use Download instead."; }
+      return;
+    }
     if (!downloads) { m.textContent = "Downloads aren't available on this device."; m.className = "msg err"; return; }
     try { await downloads.save({filename, data}); m.textContent = "Saved " + filename + "."; }
     catch (e) { m.textContent = e && e.code === "declined" ? "Download cancelled." : "Couldn't save the file" + (e && e.code ? " (" + e.code + ")" : "") + "."; if (!(e && e.code === "declined")) m.className = "msg err"; }
