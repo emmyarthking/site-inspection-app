@@ -286,8 +286,9 @@ td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
   .rating{gap:8px}
 }
 th:nth-child(3),td:nth-child(3){min-width:170px}
-th:nth-child(6),td:nth-child(6){min-width:240px}
-th:nth-child(7),td:nth-child(7){min-width:160px}
+th:nth-child(4),td:nth-child(4){min-width:140px}
+th:nth-child(7),td:nth-child(7){min-width:240px}
+th:nth-child(8),td:nth-child(8){min-width:160px}
 th,td{padding:12px 14px;line-height:1.4}
 table{min-width:960px}
 .rsum{margin-top:18px;padding:0 4px;font-size:.92rem;color:var(--muted)}
@@ -352,6 +353,31 @@ textarea.fld{min-height:80px}
 .sched-row .n{grid-area:n;font-weight:500;overflow-wrap:anywhere;font-size:.98rem}
 .sched-row .d{grid-area:d;grid-column:auto;font-size:.84rem;color:var(--muted);white-space:nowrap}
 .sched-row select{grid-area:s;grid-row:auto;grid-column:auto;min-height:36px;border:0;background:var(--brand-weak);color:var(--brand);font-weight:600;font-size:.9rem;border-radius:18px;padding:0 30px 0 14px;appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,currentColor 50%),linear-gradient(135deg,currentColor 50%,transparent 50%);background-position:calc(100% - 16px) 52%,calc(100% - 11px) 52%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+
+/* ---- contractors & locations ---- */
+.seg.full{display:flex;width:100%;margin-bottom:14px}
+.seg.full button{flex:1}
+.list{display:grid;background:var(--surface);border-radius:14px;overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.lrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:none;border-top:1px solid var(--line);padding:14px 16px;font:inherit;color:inherit}
+.list > .lrow:first-child{border-top:0}
+button.lrow{cursor:pointer} button.lrow:active{background:var(--sunk)}
+.lrow .lb{flex:1;min-width:0;display:grid;gap:2px}
+.lrow .n{font-weight:600;overflow-wrap:anywhere}
+.lrow .d{font-size:.84rem;color:var(--muted);overflow-wrap:anywhere}
+.lrow .cnt{font-size:.84rem;color:var(--muted);white-space:nowrap}
+.lrow.loc{display:grid;gap:10px}
+.ltop{display:flex;align-items:flex-start;gap:8px}
+.lctl{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:8px}
+select.pill{width:100%;min-height:40px;border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);border-radius:10px;padding:0 10px;font-size:.9rem}
+.addbtn{margin-top:12px}
+.cform{display:grid;gap:12px;margin-bottom:12px}
+.addloc{display:flex;gap:10px;align-items:flex-end;margin-bottom:10px}
+.addloc label{flex:1}
+.sh2{font-size:.85rem;color:var(--muted);margin:14px 4px 8px}
+.empty-sm{padding:20px 16px;color:var(--muted);font-size:.92rem}
+.linkbtn.danger{color:var(--bad);justify-self:center}
+.hint{font-size:.84rem;color:var(--brand);font-weight:500}
+.hint:empty{display:none}
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;padding:24px;z-index:50;cursor:zoom-out}
 .lightbox img{max-height:90vh;max-width:100%;border-radius:8px}
 @media (prefers-reduced-motion:reduce){.side{transition:none}}
@@ -377,6 +403,7 @@ textarea.fld{min-height:80px}
     <a href="#dashboard" data-v="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>Dashboard<span class="badge" id="nav-n" hidden></span></a>
     <a href="#inspections" data-v="inspections"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 3h6v3H9zM9 11l2 2 4-4M9 17h6"/></svg>Inspection</a>
     <a href="#reports" data-v="reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h8"/></svg>Reports</a>
+    <a href="#places" data-v="places"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Contractors &amp; locations</a>
   </nav>
   <div class="foot"><span class="net" id="net-b">Online</span><div id="pend-note" hidden></div><div id="cloud-note"></div><button type="button" class="linkbtn" id="signout" hidden>Sign in to sync</button></div>
 </aside>
@@ -391,11 +418,44 @@ textarea.fld{min-height:80px}
       <div class="rhead"><h3>Reminders</h3><span class="eyebrow" id="rem-sum"></span></div>
       <div class="rem-list" id="rem-list"></div>
     </div>
-    <details class="panel sched" id="sched">
-      <summary><span class="st">Inspection schedule</span><span class="sc" id="sched-count"></span></summary>
-      <p class="sh">How often each location needs checking. It shows as late when that time passes.</p>
-      <div id="sched-list"></div>
-    </details>
+  </section>
+
+  <!-- CONTRACTORS & LOCATIONS -->
+  <section class="view" id="v-places" aria-labelledby="h-places" hidden>
+    <div class="vhead"><h2 id="h-places">Contractors &amp; locations</h2></div>
+    <div class="seg full" role="tablist" aria-label="Show">
+      <button type="button" data-t="con" aria-pressed="true">Contractors</button>
+      <button type="button" data-t="loc" aria-pressed="false">Locations</button>
+    </div>
+
+    <div id="t-con">
+      <form class="panel cform" id="cform" hidden novalidate>
+        <h3 id="cform-h">New contractor</h3>
+        <label for="c-name">Company or contractor name<input class="fld" id="c-name" type="text" placeholder="e.g. CleanPro Services"></label>
+        <div class="row2">
+          <label for="c-phone">Phone<input class="fld" id="c-phone" type="tel" placeholder="e.g. 024 000 0000"></label>
+          <label for="c-email">Email<input class="fld" id="c-email" type="email" placeholder="name@company.com"></label>
+        </div>
+        <label for="c-person">Contact person <span class="opt">· optional</span><input class="fld" id="c-person" type="text"></label>
+        <div class="msg" id="cmsg" role="status"></div>
+        <div class="row2">
+          <button class="btn ghost" type="button" id="c-cancel">Cancel</button>
+          <button class="btn" type="submit" id="c-save">Save</button>
+        </div>
+        <button class="linkbtn danger" type="button" id="c-del" hidden>Delete contractor</button>
+      </form>
+      <div class="list" id="con-list"></div>
+      <button class="btn ghost block addbtn" type="button" id="c-add">+ Add contractor</button>
+    </div>
+
+    <div id="t-loc" hidden>
+      <div class="panel addloc">
+        <label for="l-name">Add a location<input class="fld" id="l-name" type="text" placeholder="e.g. Admin Block – Toilets"></label>
+        <button class="btn" type="button" id="l-add">Add</button>
+      </div>
+      <p class="sh2">Pick the contractor responsible for each location and how often it must be inspected.</p>
+      <div class="list" id="loc-list"></div>
+    </div>
   </section>
 
   <!-- INSPECTIONS -->
@@ -432,6 +492,9 @@ textarea.fld{min-height:80px}
       <div class="row" id="r-week" hidden>
         <label for="r-wk">Any day in the week<input class="fld" type="date" id="r-wk"></label>
       </div>
+      <div class="row">
+        <label for="r-con">Contractor<select class="fld" id="r-con"><option value="">All contractors</option></select></label>
+      </div>
       <div class="row dlrow">
         <button class="btn" type="button" id="dl-pdf">Download PDF</button>
         <button class="btn ghost" type="button" id="dl-xlsx">Download Excel</button>
@@ -443,7 +506,7 @@ textarea.fld{min-height:80px}
       <div class="msg" id="rmsg" role="status"></div>
     </div>
     <div class="rsum" id="rsum"></div>
-    <div class="tablewrap"><table id="rtable"><thead><tr><th>#</th><th>Date</th><th>Location</th><th>Activity</th><th>Status</th><th>Findings</th><th>Inspected by</th><th>Photos</th></tr></thead><tbody></tbody></table></div>
+    <div class="tablewrap"><table id="rtable"><thead><tr><th>#</th><th>Date</th><th>Location</th><th>Contractor</th><th>Activity</th><th>Status</th><th>Findings</th><th>Inspected by</th><th>Photos</th></tr></thead><tbody></tbody></table></div>
   </section>
 </main>
 
@@ -457,7 +520,7 @@ textarea.fld{min-height:80px}
   </div>
   <div class="inner">
     <form id="f" autocomplete="off" novalidate>
-      <label for="f-location">Location<input class="fld big" type="text" id="f-location" list="dl-location" placeholder="Start typing, e.g. Admin Block – Toilets" enterkeyhint="next"></label>
+      <label for="f-location">Location<input class="fld big" type="text" id="f-location" list="dl-location" placeholder="Start typing, e.g. Admin Block – Toilets" enterkeyhint="next"><span class="hint" id="f-con"></span></label>
       <div class="row2">
         <label for="f-activity">Activity<select class="fld" id="f-activity"></select></label>
         <label for="f-date">Date<input class="fld" type="date" id="f-date"></label>
@@ -544,7 +607,7 @@ textarea.fld{min-height:80px}
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2,8);
 
   let db = null, assets = null, downloads = null;
-  let activities = DEFAULT_ACTS.slice(), locations = [];
+  let activities = DEFAULT_ACTS.slice(), locations = [], contractors = {}, locMeta = {};
   const FREQS = [[1,"Daily"],[2,"Every 2 days"],[3,"Every 3 days"],[7,"Weekly"],[14,"Every 2 weeks"],[30,"Monthly"],[0,"Not scheduled"]];
   const DEFAULT_EVERY = 1;
   let schedule = {}, schedDirty = [];   // schedule: locKey -> days (0 = not scheduled)
@@ -564,6 +627,7 @@ textarea.fld{min-height:80px}
   remote = LS.get("sil.cache", []);
   schedule = LS.get("sil.sched", {}); schedDirty = LS.get("sil.schedDirty", []);
   activities = LS.get("sil.acts", activities);
+  contractors = LS.get("sil.cons", {}); locMeta = LS.get("sil.locMeta", {});
   locations = LS.get("sil.locs", []).map(l => typeof l === "string" ? l : locText(l)).filter(Boolean);
 
   const idb = (() => {
@@ -606,7 +670,7 @@ textarea.fld{min-height:80px}
         if (blobs.length && assets) { entry.photoIds = []; for (const b of blobs) entry.photoIds.push((await assets.upload(b, {type:"image/jpeg"})).id); }
         await db.collection("inspections").doc(p.id).set(entry);
         const ln = locText(entry), k = locKey(ln);
-        if (ln && !locations.some(l => locKey(l) === k)) db.doc("locations/"+k).set({name: ln}).catch(()=>{});
+        if (ln && !locMeta[k]) db.doc("locations/"+k).set({name: ln, everyDays: schedule[k] != null ? schedule[k] : DEFAULT_EVERY, contractorId: ""}).catch(()=>{});
         await delPending(p.id);
         pending = pending.filter(x => x.id !== p.id);
       } catch { break; }
@@ -615,7 +679,7 @@ textarea.fld{min-height:80px}
   }
 
   // ---------- routing + side menu ----------
-  const VIEWS = {dashboard:"Dashboard", inspections:"Inspection", reports:"Reports"};
+  const VIEWS = {dashboard:"Dashboard", inspections:"Inspection", reports:"Reports", places:"Contractors & locations"};
   function openMenu(o){ $("side").classList.toggle("open", o); $("scrim").hidden = !o; $("menu-btn").setAttribute("aria-expanded", String(o)); }
   $("menu-btn").onclick = () => openMenu(true);
   $("scrim").onclick = () => openMenu(false);
@@ -624,7 +688,7 @@ textarea.fld{min-height:80px}
     Object.keys(VIEWS).forEach(k => $("v-"+k).hidden = k !== v);
     document.querySelectorAll(".side nav a").forEach(a => a.dataset.v === v ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"));
     $("bar-title").textContent = VIEWS[v];
-    $("fab").hidden = v === "reports";
+    $("fab").hidden = v === "reports" || v === "places";
     openMenu(false); window.scrollTo(0,0);
   }
   window.addEventListener("hashchange", route);
@@ -656,36 +720,106 @@ textarea.fld{min-height:80px}
       const b = el("div","b");
       b.append(el("div","n", r.name), el("div","d", (r.last ? "Last " + agoText(r.since) : "Never inspected") + " · " + (FREQS.find(f => f[0] === r.every) || [0, "Every " + r.every + " days"])[1]));
       it.tabIndex = 0; it.setAttribute("role","button"); it.setAttribute("aria-label","Inspect " + r.name);
-      const go = () => { openSheet(true); $("f-location").value = r.name; };
+      const go = () => { openSheet(true); $("f-location").value = r.name; conHint(); };
       it.onclick = go; it.onkeydown = ev => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); go(); } };
       const cta = el("span","cta", r.last === null ? "New" : r.over > 0 ? plural(r.over, "day") + " late" : "Due today");
       it.append(el("div","stripe"), b, cta); return it;
     }) : [el("div","msg","No locations are due. Locations appear here once they have been inspected at least once.")]));
-    if (due.length > 12) $("rem-list").append(el("div","msg","+ " + (due.length - 12) + " more. See the schedule below."));
-    $("sched-count").textContent = plural(rs.length, "location");
-    $("sched-list").replaceChildren(...rs.sort((a,b) => a.name.localeCompare(b.name)).map(r => {
-      const row = el("div","sched-row"), sel = el("select","sm");
-      sel.id = "sch-" + r.k; sel.setAttribute("aria-label","How often to inspect " + r.name);
-      FREQS.forEach(([v,t]) => { const o = el("option",null,t); o.value = String(v); sel.append(o); });
-      if (!FREQS.some(f => f[0] === r.every)) { const o = el("option",null,"Every " + r.every + " days"); o.value = String(r.every); sel.append(o); }
-      sel.value = String(r.every);
-      sel.onchange = () => setSchedule(r.k, r.name, Number(sel.value));
-      row.append(el("div","n", r.name), el("div","d", r.last ? "Last " + fmt(parse(r.last),{day:"numeric",month:"short"}) : "Not checked yet"), sel);
-      return row;
-    }));
+    if (due.length > 12) $("rem-list").append(el("div","msg","+ " + (due.length - 12) + " more."));
+    renderPlaces();
   }
-  async function setSchedule(k, name, days){
-    schedule[k] = days; LS.set("sil.sched", schedule);
-    if (!schedDirty.includes(k)) schedDirty.push(k); LS.set("sil.schedDirty", schedDirty);
-    renderReminders(); pushSchedule();
+  function saveLocation(k, name, patch){
+    const cur = locMeta[k] || {};
+    const doc = {name, everyDays: schedule[k] != null ? schedule[k] : DEFAULT_EVERY, contractorId: cur.contractorId || "", ...patch};
+    locMeta[k] = doc; LS.set("sil.locMeta", locMeta);
+    if (typeof doc.everyDays === "number") { schedule[k] = doc.everyDays; LS.set("sil.sched", schedule); }
+    if (!locations.some(l => locKey(l) === k)) { locations.push(name); LS.set("sil.locs", locations); }
+    if (db) db.doc("locations/" + k).set(doc).catch(() => {});
+    renderAll();
   }
-  async function pushSchedule(){
-    if (!db || !navigator.onLine) return;
-    const names = new Map(reminders().map(r => [r.k, r.name]));
-    for (const k of schedDirty.slice()) {
-      try { await db.doc("locations/" + k).set({name: names.get(k) || k, everyDays: schedule[k]}); schedDirty = schedDirty.filter(x => x !== k); LS.set("sil.schedDirty", schedDirty); } catch { break; }
-    }
+  function setSchedule(k, name, days){ saveLocation(k, name, {everyDays: days}); }
+  function pushSchedule(){}
+  const conOf = name => { const m = locMeta[locKey(name)]; return m && m.contractorId && contractors[m.contractorId] ? contractors[m.contractorId] : null; };
+  const conName = e => e.contractor || (conOf(locText(e)) || {}).name || "";
+
+  // ---------- contractors & locations screen ----------
+  let placesTab = "con", editCon = null, delLoc = null;
+  document.querySelectorAll("#v-places .seg button").forEach(b => b.onclick = () => {
+    placesTab = b.dataset.t; document.querySelectorAll("#v-places .seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    $("t-con").hidden = placesTab !== "con"; $("t-loc").hidden = placesTab !== "loc";
+  });
+  function openConForm(id){
+    editCon = id || null; const c = id ? contractors[id] : {};
+    $("cform-h").textContent = id ? "Edit contractor" : "New contractor";
+    $("c-name").value = c.name || ""; $("c-phone").value = c.phone || ""; $("c-email").value = c.email || ""; $("c-person").value = c.person || "";
+    $("c-del").hidden = !id; $("c-del").textContent = "Delete contractor"; $("cmsg").textContent = "";
+    $("cform").hidden = false; $("c-add").hidden = true; $("c-name").focus();
   }
+  function closeConForm(){ $("cform").hidden = true; $("c-add").hidden = false; editCon = null; }
+  $("c-add").onclick = () => openConForm(null);
+  $("c-cancel").onclick = closeConForm;
+  $("cform").onsubmit = e => {
+    e.preventDefault();
+    const name = $("c-name").value.trim();
+    if (!name) { $("cmsg").textContent = "Enter the contractor's name."; $("cmsg").className = "msg err"; $("c-name").focus(); return; }
+    const id = editCon || uid();
+    const doc = {name, phone: $("c-phone").value.trim(), email: $("c-email").value.trim(), person: $("c-person").value.trim()};
+    contractors[id] = doc; LS.set("sil.cons", contractors);
+    if (db) db.doc("contractors/" + id).set(doc).catch(() => {});
+    closeConForm(); renderAll();
+  };
+  $("c-del").onclick = () => {
+    if ($("c-del").textContent !== "Tap again to delete") { $("c-del").textContent = "Tap again to delete"; return; }
+    const id = editCon; delete contractors[id]; LS.set("sil.cons", contractors);
+    if (db) db.doc("contractors/" + id).delete().catch(() => {});
+    Object.entries(locMeta).forEach(([k, m]) => { if (m.contractorId === id) saveLocation(k, m.name, {contractorId: ""}); });
+    closeConForm(); renderAll();
+  };
+  $("l-add").onclick = () => {
+    const n = $("l-name").value.trim().replace(/\s+/g, " "); if (!n) { $("l-name").focus(); return; }
+    const k = locKey(n); saveLocation(k, (locMeta[k] && locMeta[k].name) || n, {});
+    $("l-name").value = "";
+  };
+  $("l-name").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); $("l-add").click(); } });
+  function renderPlaces(){
+    const cons = Object.entries(contractors).sort((a,b) => a[1].name.localeCompare(b[1].name));
+    const count = id => Object.values(locMeta).filter(m => m.contractorId === id).length;
+    $("con-list").replaceChildren(...(cons.length ? cons.map(([id, c]) => {
+      const r = el("button","lrow"); r.type = "button"; r.onclick = () => openConForm(id);
+      const b = el("span","lb"); b.append(el("span","n", c.name), el("span","d", [c.person, c.phone, c.email].filter(Boolean).join(" · ") || "No contact details"));
+      r.append(b, el("span","cnt", plural(count(id), "location"))); return r;
+    }) : [el("div","empty-sm","No contractors yet. Add the companies responsible for your locations.")]));
+    const rs = reminders().sort((a,b) => a.name.localeCompare(b.name));
+    $("loc-list").replaceChildren(...(rs.length ? rs.map(r => {
+      const row = el("div","lrow loc");
+      const top = el("div","ltop"); const b = el("span","lb");
+      b.append(el("span","n", r.name), el("span","d", r.last ? "Last inspected " + fmt(parse(r.last),{day:"numeric",month:"short"}) : "Not inspected yet"));
+      const del = el("button", delLoc === r.k ? "btn danger small" : "icon-del", delLoc === r.k ? "Remove?" : null); del.type = "button";
+      del.setAttribute("aria-label", delLoc === r.k ? "Confirm remove " + r.name : "Remove " + r.name);
+      if (delLoc !== r.k) del.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>';
+      del.onclick = () => {
+        if (delLoc !== r.k) { delLoc = r.k; renderPlaces(); return; }
+        delLoc = null; delete locMeta[r.k]; LS.set("sil.locMeta", locMeta);
+        locations = locations.filter(l => locKey(l) !== r.k); LS.set("sil.locs", locations);
+        if (db) db.doc("locations/" + r.k).delete().catch(() => {});
+        renderAll();
+      };
+      top.append(b, del);
+      const ctl = el("div","lctl");
+      const cs = el("select","pill"); cs.id = "lc-" + r.k; cs.setAttribute("aria-label","Contractor for " + r.name);
+      cs.append(el("option",null,"No contractor")); cs.firstChild.value = "";
+      cons.forEach(([id, c]) => { const o = el("option",null,c.name); o.value = id; cs.append(o); });
+      cs.value = (locMeta[r.k] && contractors[locMeta[r.k].contractorId]) ? locMeta[r.k].contractorId : "";
+      cs.onchange = () => saveLocation(r.k, r.name, {contractorId: cs.value});
+      const fs = el("select","pill"); fs.id = "lf-" + r.k; fs.setAttribute("aria-label","How often to inspect " + r.name);
+      FREQS.forEach(([v,t]) => { const o = el("option",null,t); o.value = String(v); fs.append(o); });
+      if (!FREQS.some(f => f[0] === r.every)) { const o = el("option",null,"Every " + r.every + " days"); o.value = String(r.every); fs.append(o); }
+      fs.value = String(r.every); fs.onchange = () => saveLocation(r.k, r.name, {everyDays: Number(fs.value)});
+      ctl.append(cs, fs);
+      row.append(top, ctl); return row;
+    }) : [el("div","empty-sm","No locations yet. Add one above, or they appear here after your first inspection.")]));
+  }
+
   let notified = false;
   function notifyOnce(){
     if (notified) return; notified = true;
@@ -736,6 +870,7 @@ textarea.fld{min-height:80px}
     head.append(el("span","act", fmt(parse(e.date),{weekday:"short",day:"numeric",month:"short"}) + " · " + (e.activity || "Activity")), el("span","chip " + (e.status||"all"), STATUS[e.status] || "No status"));
     if (e._pending) head.append(el("span","chip pend","Waiting to sync"));
     body.append(el("div","loc", locText(e)), head);
+    if (conName(e)) body.append(el("div","by","Contractor: " + conName(e)));
     if (e.findings) body.append(el("p",null,e.findings));
     if (e.action) { const p = el("p"); p.append(el("b",null,"Action: "), document.createTextNode(e.action)); body.append(p); }
     if (inspBy(e)) body.append(el("div","by","Inspected by " + inspBy(e)));
@@ -781,26 +916,29 @@ textarea.fld{min-height:80px}
     rmode = b.dataset.m; document.querySelectorAll("#rmode button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     $("r-range").hidden = rmode !== "range"; $("r-month").hidden = rmode !== "month"; $("r-week").hidden = rmode !== "week"; renderReport();
   });
-  ["r-from","r-to","r-mon","r-wk"].forEach(i => $(i).addEventListener("change", renderReport));
+  ["r-from","r-to","r-mon","r-wk","r-con"].forEach(i => $(i).addEventListener("change", renderReport));
   function reportSpec(){
     let from, to, title;
     if (rmode === "month") { const m = $("r-mon").value || ymd(now0).slice(0,7); from = m + "-01"; const d = parse(from); to = ymd(new Date(d.getFullYear(), d.getMonth()+1, 0)); title = monthLabel(m); }
     else if (rmode === "week") { const ws = weekStart(parse($("r-wk").value || ymd(now0))); from = ymd(ws); to = ymd(addDays(ws,6)); title = weekLabel(ws); }
     else { from = $("r-from").value || "0000-01-01"; to = $("r-to").value || "9999-12-31"; if (from > to) [from, to] = [to, from]; title = fmt(parse(from),{day:"numeric",month:"short",year:"numeric"}) + " – " + fmt(parse(to),{day:"numeric",month:"short",year:"numeric"}); }
-    const st = "", fac = "";
-    const rows = all().filter(e => e.date >= from && e.date <= to && (!st || e.status === st) && (!fac || locText(e) === fac))
+    const st = "", fac = "", con = $("r-con").value;
+    const rows = all().filter(e => e.date >= from && e.date <= to && (!st || e.status === st) && (!fac || locText(e) === fac) && (!con || conName(e) === con))
       .sort((a,b) => (a.date + (a.createdAt||"")).localeCompare(b.date + (b.createdAt||"")));
-    return {from, to, title, rows, st, fac};
+    return {from, to, title, rows, st, fac, con};
   }
-  const COLS = ["#","Date","Location","Activity","Status","Findings","Inspected by","Photos"];
-  const rowVals = (e,i) => [i+1, e.date, locText(e), e.activity||"", STATUS[e.status]||"", e.findings||"", inspBy(e), photoSrcs(e).length ? photoSrcs(e).length + " photo" + (photoSrcs(e).length > 1 ? "s" : "") : ""];
+  const COLS = ["#","Date","Location","Contractor","Activity","Status","Findings","Inspected by","Photos"];
+  const rowVals = (e,i) => [i+1, e.date, locText(e), conName(e), e.activity||"", STATUS[e.status]||"", e.findings||"", inspBy(e), photoSrcs(e).length ? photoSrcs(e).length + " photo" + (photoSrcs(e).length > 1 ? "s" : "") : ""];
   function renderReport(){
-    const facs = [...new Set(all().map(locText).filter(Boolean))].sort((a,b) => a.localeCompare(b));
+    const cs = $("r-con"), curC = cs.value;
+    const names = [...new Set([...Object.values(contractors).map(c => c.name), ...all().map(conName)].filter(Boolean))].sort((a,b) => a.localeCompare(b));
+    cs.replaceChildren(el("option",null,"All contractors"), ...names.map(n => { const o = el("option",null,n); o.value = n; return o; }));
+    cs.firstChild.value = ""; cs.value = names.includes(curC) ? curC : "";
     const s = reportSpec(), c = summary(s.rows);
-    $("rsum").textContent = s.title + " · " + plural(s.rows.length, "inspection") + ((c.warn + c.bad) ? " · " + (c.warn + c.bad) + " flagged" : "");
+    $("rsum").textContent = s.title + (s.con ? " · " + s.con : "") + " · " + plural(s.rows.length, "inspection") + ((c.warn + c.bad) ? " · " + (c.warn + c.bad) + " flagged" : "");
     const tb = $("rtable").tBodies[0];
     if (!s.rows.length) { const tr = el("tr"), td = el("td",null,"No inspections in this period."); td.colSpan = COLS.length; tr.append(td); tb.replaceChildren(tr); return; }
-    tb.replaceChildren(...s.rows.map((e,i) => { const tr = el("tr"); rowVals(e,i).forEach((v,j) => { if (j === 7) { const td = el("td"); const srcs = photoSrcs(e); if (srcs.length) td.append(picsEl(srcs, e.activity)); tr.append(td); } else tr.append(el("td", j===0||j===1 ? "num" : null, String(v))); }); return tr; }));
+    tb.replaceChildren(...s.rows.map((e,i) => { const tr = el("tr"); rowVals(e,i).forEach((v,j) => { if (j === 8) { const td = el("td"); const srcs = photoSrcs(e); if (srcs.length) td.append(picsEl(srcs, e.activity)); tr.append(td); } else tr.append(el("td", j===0||j===1 ? "num" : null, String(v))); }); return tr; }));
   }
   async function thumbData(src){
     try {
@@ -812,7 +950,7 @@ textarea.fld{min-height:80px}
       return c.toDataURL("image/jpeg", 0.8);
     } catch { return null; }
   }
-  const fileBase = s => "inspection-report_" + s.from + "_to_" + s.to;
+  const fileBase = s => "inspection-report_" + (s.con ? s.con.replace(/[^A-Za-z0-9]+/g,"-") + "_" : "") + s.from + "_to_" + s.to;
   let shareNext = false;
   const MIME = {pdf:"application/pdf", xlsx:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
   const canShareFiles = (() => { try { return !!(navigator.canShare && navigator.canShare({files:[new File(["x"], "t.pdf", {type:"application/pdf"})]})); } catch { return false; } })();
@@ -843,16 +981,16 @@ textarea.fld{min-height:80px}
     const c = summary(s.rows);
     doc.setFont("helvetica","bold"); doc.setFontSize(16); doc.text("Site Inspection Report", 40, 44);
     doc.setFont("helvetica","normal"); doc.setFontSize(10);
-    doc.text("Period: " + s.title + (s.fac ? "   Location: " + s.fac : "") + (s.st ? "   Status: " + STATUS[s.st] : ""), 40, 62);
+    doc.text("Period: " + s.title + (s.con ? "   Contractor: " + s.con : "") + (s.fac ? "   Location: " + s.fac : "") + (s.st ? "   Status: " + STATUS[s.st] : ""), 40, 62);
     doc.text("Total: " + s.rows.length + "   Satisfactory: " + c.ok + "   Needs attention: " + c.warn + "   Unsatisfactory: " + c.bad + "   Generated: " + new Date().toLocaleString(), 40, 76);
     doc.autoTable({
-      startY: 90, head: [COLS], body: s.rows.map((e,i) => { const v = rowVals(e,i); const n = photoSrcs(e).length; v[7] = n > PER ? "+" + (n - PER) + " more" : ""; return v; }),
+      startY: 90, head: [COLS], body: s.rows.map((e,i) => { const v = rowVals(e,i); const n = photoSrcs(e).length; v[8] = n > PER ? "+" + (n - PER) + " more" : ""; return v; }),
       styles: {fontSize: 8, cellPadding: 4, valign: "top"},
       headStyles: {fillColor: [31,43,36], textColor: 255},
-      columnStyles: {0:{cellWidth:20}, 1:{cellWidth:56}, 2:{cellWidth:130}, 3:{cellWidth:76}, 4:{cellWidth:80}, 5:{cellWidth:212}, 6:{cellWidth:94}, 7:{cellWidth:94, valign:"bottom", fontSize:7}},
-      didParseCell: d => { if (d.section === "body" && d.column.index === 7) { const n = thumbs[d.row.index].filter(Boolean).length; if (n) d.cell.styles.minCellHeight = Math.ceil(n/2) * 44 + 10; }
-        if (d.section === "body" && d.column.index === 4) { const v = d.cell.raw; d.cell.styles.textColor = v === "Satisfactory" ? [46,125,79] : v === "Needs attention" ? [168,106,0] : v === "Unsatisfactory" ? [179,54,44] : 0; d.cell.styles.fontStyle = "bold"; } },
-      didDrawCell: d => { if (d.section !== "body" || d.column.index !== 7) return;
+      columnStyles: {0:{cellWidth:20}, 1:{cellWidth:54}, 2:{cellWidth:110}, 3:{cellWidth:90}, 4:{cellWidth:66}, 5:{cellWidth:76}, 6:{cellWidth:170}, 7:{cellWidth:84}, 8:{cellWidth:92, valign:"bottom", fontSize:7}},
+      didParseCell: d => { if (d.section === "body" && d.column.index === 8) { const n = thumbs[d.row.index].filter(Boolean).length; if (n) d.cell.styles.minCellHeight = Math.ceil(n/2) * 44 + 10; }
+        if (d.section === "body" && d.column.index === 5) { const v = d.cell.raw; d.cell.styles.textColor = v === "Satisfactory" ? [46,125,79] : v === "Needs attention" ? [168,106,0] : v === "Unsatisfactory" ? [179,54,44] : 0; d.cell.styles.fontStyle = "bold"; } },
+      didDrawCell: d => { if (d.section !== "body" || d.column.index !== 8) return;
         thumbs[d.row.index].filter(Boolean).forEach((src, k) => { try { doc.addImage(src, "JPEG", d.cell.x + 4 + (k%2)*44, d.cell.y + 4 + Math.floor(k/2)*44, 40, 40); } catch {} }); },
       didDrawPage: d => { doc.setFontSize(8); doc.text("Page " + doc.internal.getNumberOfPages(), doc.internal.pageSize.getWidth() - 70, doc.internal.pageSize.getHeight() - 20); }
     });
@@ -862,16 +1000,16 @@ textarea.fld{min-height:80px}
     const s = reportSpec();
     if (!window.XLSX) { $("rmsg").textContent = "The Excel tool didn't load. Check your connection and reload."; $("rmsg").className = "msg err"; return; }
     const c = summary(s.rows);
-    const aoa = [["Site Inspection Report"], ["Period", s.title], ["Total", s.rows.length, "Satisfactory", c.ok, "Needs attention", c.warn, "Unsatisfactory", c.bad], [], COLS, ...s.rows.map(rowVals)];
+    const aoa = [["Site Inspection Report"], ["Period", s.title], ...(s.con ? [["Contractor", s.con]] : []), ["Total", s.rows.length, "Satisfactory", c.ok, "Needs attention", c.warn, "Unsatisfactory", c.bad], [], COLS, ...s.rows.map(rowVals)];
     const ws = XLSX.utils.aoa_to_sheet(aoa);
-    ws["!cols"] = [{wch:4},{wch:11},{wch:36},{wch:16},{wch:16},{wch:50},{wch:30},{wch:10}];
+    ws["!cols"] = [{wch:4},{wch:11},{wch:36},{wch:24},{wch:16},{wch:16},{wch:50},{wch:30},{wch:10}];
     const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Inspections");
     const out = XLSX.write(wb, {bookType:"xlsx", type:"array"});
     await save(fileBase(s) + ".xlsx", new Blob([out], {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
   };
 
   // ---------- new inspection sheet ----------
-  function openSheet(o){ $("sheet").hidden = !o; document.body.style.overflow = o ? "hidden" : ""; if (o) { $("f-date").value = $("f-date").value || ymd(new Date()); $("fmsg").textContent = ""; const me = LS.get("sil.me", {}); if (!$("f-inspector").value) $("f-inspector").value = me.inspector || ""; if (!$("f-designation").value) $("f-designation").value = me.designation || ""; updateWho(); $("who").open = !$("f-inspector").value.trim(); $("f-location").focus(); } else $("fab").focus(); }
+  function openSheet(o){ $("sheet").hidden = !o; document.body.style.overflow = o ? "hidden" : ""; if (o) { $("f-date").value = $("f-date").value || ymd(new Date()); $("fmsg").textContent = ""; const me = LS.get("sil.me", {}); if (!$("f-inspector").value) $("f-inspector").value = me.inspector || ""; if (!$("f-designation").value) $("f-designation").value = me.designation || ""; conHint(); updateWho(); $("who").open = !$("f-inspector").value.trim(); $("f-location").focus(); } else $("fab").focus(); }
   function updateWho(){ $("who-sum").textContent = [$("f-inspector").value.trim(), $("f-designation").value.trim()].filter(Boolean).join(", ") || "Not set"; }
   ["f-inspector","f-designation"].forEach(i => $(i).addEventListener("input", updateWho));
   $("fab").onclick = () => openSheet(true);
@@ -895,6 +1033,8 @@ textarea.fld{min-height:80px}
   $("add-act").onclick = () => { const v = $("new-act").value.trim(); if (!v) return; if (!activities.some(a => a.toLowerCase() === v.toLowerCase())) saveActivities([...activities, v]); $("new-act").value = ""; };
   $("new-act").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); $("add-act").click(); } });
 
+  function conHint(){ const c = conOf($("f-location").value.trim()); $("f-con").textContent = c ? "Contractor: " + c.name : ""; }
+  $("f-location").addEventListener("input", conHint);
   function fillDatalists(){
     const opts = new Map();
     [...locations, ...all().map(locText)].forEach(n => { if (n) opts.set(n.toLowerCase(), n); });
@@ -933,7 +1073,8 @@ textarea.fld{min-height:80px}
     if (!location_) { msg.textContent = "Enter a location."; msg.className = "msg err"; $("f-location").focus(); return; }
     if (!$("f-inspector").value.trim()) { msg.textContent = "Enter the inspector's name."; msg.className = "msg err"; $("who").open = true; $("f-inspector").focus(); return; }
     const id = uid();
-    const entry = { date: $("f-date").value, location: location_, activity: $("f-activity").value,
+    const con_ = conOf(location_);
+    const entry = { date: $("f-date").value, location: location_, contractor: con_ ? con_.name : "", contractorId: con_ ? (locMeta[locKey(location_)] || {}).contractorId : "", activity: $("f-activity").value,
       status: document.querySelector("input[name=status]:checked").value,
       findings: $("f-findings").value.trim(),
       inspector: $("f-inspector").value.trim(), designation: $("f-designation").value.trim(), photoIds: [], createdAt: new Date().toISOString() };
@@ -960,9 +1101,11 @@ textarea.fld{min-height:80px}
     [db, assets, downloads] = await Promise.all([c.use("db"), c.use("assets"), c.use("downloads")]);
     if (!db) { $("nodb").hidden = false; return; }
     db.doc("config/activities").onSnapshot(s => { const d = s.exists && s.data(); if (d && Array.isArray(d.list) && d.list.length) { activities = d.list.map(String); LS.set("sil.acts", activities); renderActivities(); } }, () => {});
+    db.collection("contractors").onSnapshot(s => { contractors = {}; s.docs.forEach(d => { const v = d.data(); if (v && v.name) contractors[d.id] = v; }); LS.set("sil.cons", contractors); renderAll(); }, () => {});
     db.collection("locations").onSnapshot(s => {
       locations = s.docs.map(d => locText(d.data()) || d.data().name).filter(Boolean); LS.set("sil.locs", locations);
-      s.docs.forEach(d => { const v = d.data(); const n = locText(v) || v.name; if (n && typeof v.everyDays === "number" && !schedDirty.includes(locKey(n))) schedule[locKey(n)] = v.everyDays; });
+      locMeta = {}; s.docs.forEach(d => { const v = d.data(); const n = locText(v) || v.name; if (!n) return; locMeta[d.id] = {name: n, everyDays: v.everyDays, contractorId: v.contractorId || ""}; if (typeof v.everyDays === "number") schedule[d.id] = v.everyDays; });
+      LS.set("sil.locMeta", locMeta);
       LS.set("sil.sched", schedule); fillDatalists(); renderReminders();
     }, () => {});
     const timer = setTimeout(() => { $("lmsg").textContent = navigator.onLine ? "Still loading from the cloud. Showing what's saved on this device." : "Offline. Showing what's saved on this device."; }, 10000);

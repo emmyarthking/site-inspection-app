@@ -7,7 +7,7 @@
 (() => {
   const CFG = window.SIL_CONFIG || {};
   const CLOUD = !!(CFG.supabaseUrl && CFG.supabaseKey);
-  const COLS = ["inspections", "locations", "config"];
+  const COLS = ["inspections", "locations", "contractors", "config"];
   const rid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
 
   // ---------- local document store (localStorage) ----------
