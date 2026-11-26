@@ -1,5 +1,5 @@
 /* Offline support: keep the app and its libraries on the phone. */
-const CACHE = "sil-v5";
+const CACHE = "sil-v6";
 const SHELL = ["./", "index.html", "config.js", "backend.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon-180.png", "letterhead.jpg",
   "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js",
   "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js",
