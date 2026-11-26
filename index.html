@@ -950,6 +950,13 @@ select.pill{width:100%;min-height:40px;border:1px solid var(--line-strong);backg
       return c.toDataURL("image/jpeg", 0.8);
     } catch { return null; }
   }
+  let letterhead;
+  async function letterheadData(){
+    if (letterhead !== undefined) return letterhead;
+    try { const b = await (await fetch("letterhead.jpg")).blob(); letterhead = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(b); }); }
+    catch { letterhead = null; }
+    return letterhead;
+  }
   const fileBase = s => "inspection-report_" + (s.con ? s.con.replace(/[^A-Za-z0-9]+/g,"-") + "_" : "") + s.from + "_to_" + s.to;
   let shareNext = false;
   const MIME = {pdf:"application/pdf", xlsx:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
@@ -976,15 +983,18 @@ select.pill{width:100%;min-height:40px;border:1px solid var(--line-strong);backg
     $("rmsg").className = "msg"; $("rmsg").textContent = "Preparing PDF with photos…"; $("dl-pdf").disabled = true;
     const PER = 4;
     const thumbs = await Promise.all(s.rows.map(e => Promise.all(photoSrcs(e).slice(0, PER).map(thumbData))));
+    const lh = await letterheadData();
     $("dl-pdf").disabled = false;
     const doc = new window.jspdf.jsPDF({orientation:"landscape", unit:"pt", format:"a4"});
     const c = summary(s.rows);
-    doc.setFont("helvetica","bold"); doc.setFontSize(16); doc.text("Site Inspection Report", 40, 44);
+    let y = 0;
+    if (lh) { try { doc.addImage(lh, "JPEG", 40, 20, 762, 762 * 202 / 1600); y = 762 * 202 / 1600 + 8; } catch { y = 0; } }
+    doc.setFont("helvetica","bold"); doc.setFontSize(16); doc.text("Site Inspection Report", 40, 44 + y);
     doc.setFont("helvetica","normal"); doc.setFontSize(10);
-    doc.text("Period: " + s.title + (s.con ? "   Contractor: " + s.con : "") + (s.fac ? "   Location: " + s.fac : "") + (s.st ? "   Status: " + STATUS[s.st] : ""), 40, 62);
-    doc.text("Total: " + s.rows.length + "   Satisfactory: " + c.ok + "   Needs attention: " + c.warn + "   Unsatisfactory: " + c.bad + "   Generated: " + new Date().toLocaleString(), 40, 76);
+    doc.text("Period: " + s.title + (s.con ? "   Contractor: " + s.con : "") + (s.fac ? "   Location: " + s.fac : "") + (s.st ? "   Status: " + STATUS[s.st] : ""), 40, 62 + y);
+    doc.text("Total: " + s.rows.length + "   Satisfactory: " + c.ok + "   Needs attention: " + c.warn + "   Unsatisfactory: " + c.bad + "   Generated: " + new Date().toLocaleString(), 40, 76 + y);
     doc.autoTable({
-      startY: 90, head: [COLS], body: s.rows.map((e,i) => { const v = rowVals(e,i); const n = photoSrcs(e).length; v[8] = n > PER ? "+" + (n - PER) + " more" : ""; return v; }),
+      startY: 90 + y, head: [COLS], body: s.rows.map((e,i) => { const v = rowVals(e,i); const n = photoSrcs(e).length; v[8] = n > PER ? "+" + (n - PER) + " more" : ""; return v; }),
       styles: {fontSize: 8, cellPadding: 4, valign: "top"},
       headStyles: {fillColor: [31,43,36], textColor: 255},
       columnStyles: {0:{cellWidth:20}, 1:{cellWidth:54}, 2:{cellWidth:110}, 3:{cellWidth:90}, 4:{cellWidth:66}, 5:{cellWidth:76}, 6:{cellWidth:170}, 7:{cellWidth:84}, 8:{cellWidth:92, valign:"bottom", fontSize:7}},
@@ -1000,7 +1010,7 @@ select.pill{width:100%;min-height:40px;border:1px solid var(--line-strong);backg
     const s = reportSpec();
     if (!window.XLSX) { $("rmsg").textContent = "The Excel tool didn't load. Check your connection and reload."; $("rmsg").className = "msg err"; return; }
     const c = summary(s.rows);
-    const aoa = [["Site Inspection Report"], ["Period", s.title], ...(s.con ? [["Contractor", s.con]] : []), ["Total", s.rows.length, "Satisfactory", c.ok, "Needs attention", c.warn, "Unsatisfactory", c.bad], [], COLS, ...s.rows.map(rowVals)];
+    const aoa = [["DELDENZKEY ENTERPRISE"], ["P.O. Box 132, Tarkwa  ·  Tel. 0244 111181 / 0271 040001"], [], ["Site Inspection Report"], ["Period", s.title], ...(s.con ? [["Contractor", s.con]] : []), ["Total", s.rows.length, "Satisfactory", c.ok, "Needs attention", c.warn, "Unsatisfactory", c.bad], [], COLS, ...s.rows.map(rowVals)];
     const ws = XLSX.utils.aoa_to_sheet(aoa);
     ws["!cols"] = [{wch:4},{wch:11},{wch:36},{wch:24},{wch:16},{wch:16},{wch:50},{wch:30},{wch:10}];
     const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Inspections");
